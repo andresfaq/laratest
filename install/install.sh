@@ -32,17 +32,18 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | b
 # Install nodejs
 nvm install v7.6.0
 
-# Clone repository
-cd $HOME
-mkdir sandbox
-cd sandbox
-git clone git@bitbucket.org:alpha-z/mt-backend.git
+# Copy laravel env settings
+cp $HOME/sandbox/mt-backend/.env.example .env
+
+# Generate key
+php artisan key:generate
+php artisan config:clear
 
 # Setting permissions for apache
 chmod -R 777 $HOME/sandbox/mt-backend/storage $HOME/sandbox/mt-backend/bootstrap/cache
 
 # Configure apache2
-sudo cp $HOME/sandbox/mt-backend/mtech.conf /etc/apache2/sites-available/mtech.conf
+sudo cp $HOME/sandbox/mt-backend/install/mtech.conf /etc/apache2/sites-available/mtech.conf
 sudo a2ensite mtech.conf
 sudo a2dissite 000-default.conf
 sudo service apache2 restart
